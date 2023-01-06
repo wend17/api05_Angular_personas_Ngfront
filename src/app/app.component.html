@@ -1,8 +1,33 @@
-<form [formGroup]="personaForm" (ngSubmit)="guardar()">
-    <div class="form-group">
-        <label>Nombre</label>
-        <input type="text" formControlName="nombre" class="form-Control">
-    </div>
-</form>
+<div class="formularioRegistro">
+    <h2>Crear persona</h2>
+    <form [formGroup]="personaForm" class="mb-3" (ngSubmit)="guardar()">
+        <div class="form-group">
+            <label class="form-label">Nombre</label>
+            <input type="text" formControlName="nombre" class="form-control">
+        </div>
+        <div class="form-group">
+            <label class="form-label">Apellido</label>
+            <input type="text" formControlName="apellido" class="form-control">
+        </div>
+        <div class="form-group">
+            <label class="form-label">Edad</label>
+            <input type="number" formControlName="edad" class="form-control">
+        </div>
+        <div class="form-group">
+            <label>Pais</label>
+            <select name="pais" id="pais" formControlName="pais" class="form-control" (change)="cargarEstadosPorPaisesId($event)">
+                <option [value]="item.id" *ngFor="let item of paises">{{item.nombre}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Estado o Región</label>
+            <select name="estado" id="estado" formControlName="estado" class="form-control">
+                <option value="item.id" *ngFor="let item of estados">{{item.nombre}}</option>
+            </select>
+        </div>
+    </form>
+    <button type="submit" class="btn btn-success">Guardar</button>
+</div>
+
 
 <router-outlet></router-outlet>

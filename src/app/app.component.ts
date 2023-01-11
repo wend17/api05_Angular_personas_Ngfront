@@ -29,6 +29,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.personaForm = new FormGroup({
+      id:new FormControl(['']),
       nombre: new FormControl('', [Validators.required]),
       apellido: new FormControl('', [Validators.required]),
       edad: new FormControl('', [Validators.required]),
@@ -56,7 +57,7 @@ export class AppComponent implements OnInit {
     this.personaForm.get('pais')?.valueChanges.subscribe(value => {
       console.log('busca estados')
       console.log(value)
-      if(value){
+      if (value) {
         this.estadosService.getAllEstadosByPais(value.id).subscribe(resp => {
             this.estados = resp;
           },
@@ -77,6 +78,7 @@ export class AppComponent implements OnInit {
     }
     this.personaService.savePersona(request).subscribe(resp => {
         this.personaForm.reset();
+        this.personas=this.personas.filter((persona:any)=>resp.id!==persona.id);
         this.personas.push(resp);
       },
       error => {
@@ -86,11 +88,22 @@ export class AppComponent implements OnInit {
   }
 
   eliminar(persona: any) {
+    console.log(persona)
+    console.log(this.personas)
     this.personaService.deletePersona(persona.id).subscribe(resp => {
-      console.log(resp)
-      if (resp === true) {
-        this.personas.pop(persona)
-      }
+      this.personas = this.personas.filter((e: any) => e.id != persona.id);
+    })
+  }
+
+  editar(persona:any){
+    this.personaForm.setValue({
+      id:persona.id,
+      nombre:persona.nombre,
+      apellido: persona.apellido,
+      edad: persona.edad,
+      pais:persona.pais ,
+      estado: persona.estado,
+
     })
   }
 
